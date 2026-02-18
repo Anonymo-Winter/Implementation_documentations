@@ -1,0 +1,1027 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Version Tables — Documentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #13161e;
+      --surface2: #1a1e2a;
+      --border: #252a38;
+      --accent: #4ade80;
+      --accent2: #38bdf8;
+      --accent3: #f472b6;
+      --accent4: #fb923c;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --code-bg: #0a0c10;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Layout */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      padding: 0 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .sidebar-logo .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .sidebar-logo h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .nav-section {
+      padding: 0 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .nav-section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      margin-bottom: 0.1rem;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .nav-link .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .nav-link:hover .dot { background: var(--accent); }
+
+    /* Main */
+    .main {
+      flex: 1;
+      padding: 3rem 4rem;
+      max-width: 900px;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 4rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    .badges {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 99px;
+      border: 1px solid;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-green { color: var(--accent); border-color: #4ade8040; background: #4ade8010; }
+    .badge-blue  { color: var(--accent2); border-color: #38bdf840; background: #38bdf810; }
+    .badge-pink  { color: var(--accent3); border-color: #f472b640; background: #f472b610; }
+
+    /* Sections */
+    .section {
+      margin-bottom: 4rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      background: #4ade8015;
+      border: 1px solid #4ade8030;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .section h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .section h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 2rem 0 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section h3::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 1em;
+      background: var(--accent2);
+      border-radius: 2px;
+    }
+
+    .section h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.5rem 0 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    p { color: #94a3b8; margin-bottom: 0.8rem; font-size: 0.95rem; }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: #3d4458; }
+
+    .card-icon {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      font-family: 'Syne', sans-serif;
+      letter-spacing: 0;
+    }
+
+    .card p { font-size: 0.82rem; margin: 0; }
+
+    /* Pattern comparison */
+    .pattern-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .pattern-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .pattern-card-header {
+      padding: 0.8rem 1.2rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    .pattern-card-header.red { background: #ef444415; color: #ef4444; border-bottom: 1px solid #ef444420; }
+    .pattern-card-header.green { background: #4ade8015; color: var(--accent); border-bottom: 1px solid #4ade8020; }
+
+    .pattern-card-body { padding: 1rem 1.2rem; }
+
+    .pattern-card-body li {
+      font-size: 0.83rem;
+      color: #94a3b8;
+      margin-bottom: 0.4rem;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .pattern-card-body li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--muted);
+    }
+
+    /* Code blocks */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      position: relative;
+    }
+
+    pre .code-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      padding: 0.6rem 1rem 0;
+      display: block;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: #cbd5e1;
+      display: block;
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    p code, li code {
+      display: inline;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+      font-size: 0.82em;
+      color: var(--accent2);
+    }
+
+    /* Keyword highlight */
+    .kw { color: #c084fc; }
+    .fn { color: #38bdf8; }
+    .str { color: #86efac; }
+    .cm { color: #475569; font-style: italic; }
+    .num { color: #fb923c; }
+
+    /* Callouts */
+    .callout {
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+      display: flex;
+      gap: 0.8rem;
+      font-size: 0.875rem;
+    }
+
+    .callout-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .callout-body { flex: 1; }
+    .callout-body strong { display: block; font-size: 0.8rem; margin-bottom: 0.2rem; }
+    .callout-body p { font-size: 0.83rem; margin: 0; }
+
+    .callout.warn { background: #fb923c10; border: 1px solid #fb923c30; }
+    .callout.warn .callout-icon, .callout.warn strong { color: var(--accent4); }
+
+    .callout.info { background: #38bdf810; border: 1px solid #38bdf830; }
+    .callout.info .callout-icon, .callout.info strong { color: var(--accent2); }
+
+    .callout.success { background: #4ade8010; border: 1px solid #4ade8030; }
+    .callout.success .callout-icon, .callout.success strong { color: var(--accent); }
+
+    /* Step list */
+    .steps { margin: 1rem 0; }
+
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: #4ade8015;
+      border: 1px solid #4ade8030;
+      border-radius: 5px;
+      padding: 0.25rem 0.55rem;
+      flex-shrink: 0;
+      height: fit-content;
+      margin-top: 0.15rem;
+    }
+
+    .step-content h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      font-family: 'Syne', sans-serif;
+      letter-spacing: 0;
+    }
+
+    .step-content p { font-size: 0.83rem; margin: 0; }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.83rem;
+    }
+
+    th {
+      background: var(--surface2);
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.7rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid #1e2330;
+      color: #94a3b8;
+    }
+
+    tr:hover td { background: #13161e80; }
+
+    td:first-child { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 0.78rem; }
+
+    /* Divider */
+    hr { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section:nth-child(1) { animation-delay: 0.05s; }
+    .section:nth-child(2) { animation-delay: 0.1s; }
+    .section:nth-child(3) { animation-delay: 0.15s; }
+    .section:nth-child(4) { animation-delay: 0.2s; }
+    .section:nth-child(5) { animation-delay: 0.25s; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { padding: 2rem 1.5rem; }
+      .card-grid, .pattern-compare { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="tag">PostgreSQL</div>
+      <h2>Version Tables<br/>Documentation</h2>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Overview</div>
+      <a href="#intro" class="nav-link"><span class="dot"></span>What are Version Tables?</a>
+      <a href="#patterns" class="nav-link"><span class="dot"></span>Patterns</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Best Practices</div>
+      <a href="#versioning" class="nav-link"><span class="dot"></span>Versioning Rules</a>
+      <a href="#retention" class="nav-link"><span class="dot"></span>Retention Plan</a>
+      <a href="#concurrency" class="nav-link"><span class="dot"></span>Concurrency</a>
+      <a href="#deletes" class="nav-link"><span class="dot"></span>Handling Deletes</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Implementation</div>
+      <a href="#tables" class="nav-link"><span class="dot"></span>Tables & Indexes</a>
+      <a href="#triggers" class="nav-link"><span class="dot"></span>Triggers</a>
+      <a href="#functions" class="nav-link"><span class="dot"></span>Trigger Functions</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Operations</div>
+      <a href="#rollback" class="nav-link"><span class="dot"></span>Rollback Queries</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero" id="intro">
+      <div class="hero-label">// Internal Docs — v1.0</div>
+      <h1>Version Tables</h1>
+      <p class="hero-desc">A data model to preserve past states of records, enabling audit trails, rollbacks, debugging, and compliance — implemented using the OLTP two-table pattern on PostgreSQL.</p>
+      <div class="badges">
+        <span class="badge badge-green">PostgreSQL 16</span>
+        <span class="badge badge-blue">OLTP Pattern</span>
+        <span class="badge badge-pink">visualization_master</span>
+      </div>
+    </div>
+
+    <!-- Patterns -->
+    <div class="section" id="patterns">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2>Patterns</h2>
+      </div>
+
+      <p>Two common approaches exist for maintaining record history. We evaluated both and selected Pattern 2.</p>
+
+      <div class="pattern-compare">
+        <div class="pattern-card">
+          <div class="pattern-card-header red">✗ Pattern 1 — SCD2 (Not Used)</div>
+          <div class="pattern-card-body">
+            <p style="font-size:0.8rem;color:#94a3b8;margin-bottom:0.7rem;">Single table with <code>valid_from</code> / <code>valid_to</code> columns. Rows where <code>valid_to IS NULL</code> are current.</p>
+            <ul>
+              <li>Table grows very fast with duplicates</li>
+              <li>Every query requires <code>valid_to IS NULL</code> filter</li>
+              <li>visualization_id is no longer unique</li>
+              <li>Composite primary key required</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-card-header green">✓ Pattern 2 — OLTP (Selected)</div>
+          <div class="pattern-card-body">
+            <p style="font-size:0.8rem;color:#94a3b8;margin-bottom:0.7rem;">Two tables: <strong>current</strong> (one row per visualization) + <strong>history</strong> (top 10 snapshots per visualization).</p>
+            <ul>
+              <li>Current reads stay fast — no extra filters</li>
+              <li>visualization_id stays unique in master</li>
+              <li>History is append-only and bounded</li>
+              <li>Clear separation of concerns</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Best Practices -->
+    <div class="section" id="versioning">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2>Best Practices</h2>
+      </div>
+
+      <h3>What counts as a new version?</h3>
+      <p>A history snapshot is only written when one or more <strong>important fields</strong> change. Trivial updates (like only <code>modified_time</code> changing) are ignored to keep history clean.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📋</div>
+          <h4>visualization_name</h4>
+          <p>Any rename of the visualization triggers a version.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <h4>visualization_config</h4>
+          <p>Config changes (rows, values, columns, options) trigger a version.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗒️</div>
+          <h4>notes_explanations</h4>
+          <p>Edits to notes or explanatory text trigger a version.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔗</div>
+          <h4>dataset_id_id & active_flag</h4>
+          <p>Dataset reassignment or activation/deactivation triggers a version.</p>
+        </div>
+      </div>
+
+      <h3>History table access control</h3>
+      <p>To maintain integrity, the history table should be treated as read-only for all regular users.</p>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Production Warning</strong>
+          <p>The current dump grants <code>SELECT</code> to <code>PUBLIC</code>. In production, restrict to specific app roles only. No user should be able to <code>UPDATE</code> or <code>DELETE</code> history rows.</p>
+        </div>
+      </div>
+
+      <h3>Required metadata fields</h3>
+
+      <table>
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Purpose</th><th>Required</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>version_id</td><td>bigint</td><td>Per-visualization sequence number (1, 2, 3…)</td><td>✅ Yes</td></tr>
+          <tr><td>history_recorder_at</td><td>timestamptz</td><td>When the snapshot was saved to history</td><td>✅ Yes</td></tr>
+          <tr><td>modified_by_id</td><td>integer</td><td>Copied from master for self-contained snapshots</td><td>Optional</td></tr>
+          <tr><td>changed_reason</td><td>text</td><td>Human-readable reason for the change</td><td>Optional</td></tr>
+        </tbody>
+      </table>
+
+      <p>The primary key on the history table is the composite <code>(visualization_id, version_id)</code>.</p>
+    </div>
+
+    <!-- Retention -->
+    <div class="section" id="retention">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2>Retention Plan</h2>
+      </div>
+
+      <p>To keep the history table from growing unbounded, a retention policy prunes old snapshots automatically after each insert.</p>
+
+      <div class="callout success">
+        <span class="callout-icon">📦</span>
+        <div class="callout-body">
+          <strong>Our Retention Rule</strong>
+          <p>Keep only the latest <strong>10 snapshots</strong> per <code>visualization_id</code>. Older versions are deleted after each history insert using the trigger.</p>
+        </div>
+      </div>
+
+      <pre><code><span class="cm">-- Retention: delete snapshots older than the last 10</span>
+<span class="kw">DELETE FROM</span> public.visualization_master_history h
+<span class="kw">WHERE</span> h.visualization_id = vid
+  <span class="kw">AND</span> h.version_id <= GREATEST(next_version - <span class="num">10</span>, <span class="num">0</span>);</code></pre>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>On Deletion from Master</strong>
+          <p>When a visualization is removed from the master table, its history rows remain in the history table unless explicitly deleted by the owner/admin.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Concurrency -->
+    <div class="section" id="concurrency">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2>Concurrency</h2>
+      </div>
+
+      <p>Without protection, two simultaneous updates to the same <code>visualization_id</code> could compute the same <code>next_version</code>, resulting in version collisions or missing snapshots.</p>
+
+      <h3>Solution: Advisory Locks</h3>
+      <p>Both trigger functions use <code>pg_advisory_xact_lock(visualization_id)</code> to serialize writes per visualization. The lock is transaction-scoped — it releases automatically on commit or rollback.</p>
+
+      <pre><code><span class="cm">-- Acquire per-visualization lock</span>
+vid := COALESCE(NEW.visualization_id, OLD.visualization_id);
+<span class="kw">PERFORM</span> <span class="fn">pg_advisory_xact_lock</span>(vid);</code></pre>
+
+      <h3>Conflict scenario walkthrough</h3>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div class="step-content">
+            <h4>User A updates visualization 123</h4>
+            <p>Transaction starts. Advisory lock on <code>vid=123</code> is acquired.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <div class="step-content">
+            <h4>User B also updates visualization 123</h4>
+            <p>Transaction starts but is blocked — waits for User A's lock to release.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <div class="step-content">
+            <h4>User A commits</h4>
+            <p>Lock is released. History row inserted with correct <code>next_version</code>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">04</span>
+          <div class="step-content">
+            <h4>User B continues</h4>
+            <p>Now acquires the lock, computes <code>next_version</code> safely as max+1. No collision.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deletes -->
+    <div class="section" id="deletes">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2>Handling Deletes</h2>
+      </div>
+
+      <p>We prefer <strong>tombstone (soft) deletes</strong> — setting <code>active_flag = false</code> rather than hard-deleting rows from the master table. This avoids accidental data loss and keeps referential integrity simpler.</p>
+
+      <p>When a <code>DELETE</code> does occur on the master table, the trigger captures the final state into history with <code>active_flag = false</code> as a tombstone snapshot.</p>
+
+      <pre><code><span class="cm">-- On DELETE: record tombstone snapshot</span>
+<span class="kw">ELSIF</span> TG_OP = <span class="str">'DELETE'</span> <span class="kw">THEN</span>
+  hist_active_flag := <span class="kw">false</span>;  <span class="cm">-- mark as deleted in history</span>
+<span class="kw">END IF</span>;</code></pre>
+    </div>
+
+    <hr/>
+
+    <!-- Tables -->
+    <div class="section" id="tables">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2>Tables & Indexes</h2>
+      </div>
+
+      <h3>visualization_master (Current Table)</h3>
+      <p>Stores exactly one row per visualization. <code>visualization_id</code> is the primary key (auto-incremented via sequence).</p>
+
+      <pre><code><span class="kw">CREATE TABLE</span> public.visualization_master (
+    visualization_id          bigint <span class="kw">NOT NULL</span>,  <span class="cm">-- PK (auto-sequence)</span>
+    visualization_name        varchar(<span class="num">255</span>),
+    visualization_config      jsonb,
+    creation_time             timestamptz,
+    modified_time             timestamptz,
+    created_by_id             integer <span class="kw">NOT NULL</span>,
+    dataset_id_id             bigint <span class="kw">NOT NULL</span>,
+    modified_by_id            integer <span class="kw">NOT NULL</span>,
+    active_flag               boolean <span class="kw">NOT NULL</span>,
+    visualization_config_preview jsonb <span class="kw">NOT NULL</span>,
+    notes_explanations        text
+);</code></pre>
+
+      <h3>visualization_master_history (History Table)</h3>
+      <p>Stores past snapshots. Mirrors the master schema plus <code>version_id</code> and <code>history_recorder_at</code>. Primary key is <code>(visualization_id, version_id)</code>.</p>
+
+      <pre><code><span class="kw">CREATE TABLE</span> public.visualization_master_history (
+    visualization_id          bigint <span class="kw">NOT NULL</span>,
+    version_id                bigint <span class="kw">NOT NULL</span>,  <span class="cm">-- per-viz sequence</span>
+    visualization_name        varchar(<span class="num">255</span>),
+    visualization_config      jsonb,
+    creation_time             timestamptz,
+    modified_time             timestamptz,
+    created_by_id             integer <span class="kw">NOT NULL</span>,
+    dataset_id_id             bigint <span class="kw">NOT NULL</span>,
+    history_recorder_at       timestamptz <span class="kw">DEFAULT</span> <span class="fn">now</span>() <span class="kw">NOT NULL</span>,
+    modified_by_id            integer <span class="kw">NOT NULL</span>,
+    active_flag               boolean <span class="kw">NOT NULL</span>,
+    visualization_config_preview jsonb <span class="kw">NOT NULL</span>,
+    notes_explanations        text,
+    <span class="kw">PRIMARY KEY</span> (visualization_id, version_id)
+);</code></pre>
+
+      <h3>Indexes</h3>
+
+      <h4>A — Latest version lookup</h4>
+      <pre><code><span class="kw">CREATE INDEX</span> visualization_master_history_latest_idx
+  <span class="kw">ON</span> public.visualization_master_history (visualization_id, version_id <span class="kw">DESC</span>);
+<span class="cm">-- Optimizes: SELECT * ... ORDER BY version_id DESC LIMIT 1</span></code></pre>
+
+      <h4>B — Global timestamp queries</h4>
+      <pre><code><span class="kw">CREATE INDEX</span> visualization_master_history_rec_at_idx
+  <span class="kw">ON</span> public.visualization_master_history (history_recorder_at);
+<span class="cm">-- Optimizes: admin audit queries over a date range</span></code></pre>
+
+      <h4>C — Per-visualization timeline</h4>
+      <pre><code><span class="kw">CREATE INDEX</span> visualization_master_history_visid_rec_at_idx
+  <span class="kw">ON</span> public.visualization_master_history (visualization_id, history_recorder_at <span class="kw">DESC</span>);
+<span class="cm">-- Optimizes: UI history timeline for a single visualization</span></code></pre>
+    </div>
+
+    <!-- Triggers -->
+    <div class="section" id="triggers">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2>Triggers</h2>
+      </div>
+
+      <p>Two triggers are attached — one on each table.</p>
+
+      <h3>On visualization_master</h3>
+      <pre><code><span class="kw">CREATE TRIGGER</span> record_audit_on_update_trigger
+  <span class="kw">AFTER DELETE OR UPDATE ON</span> public.visualization_master
+  <span class="kw">FOR EACH ROW</span>
+  <span class="kw">EXECUTE FUNCTION</span> public.<span class="fn">record_audit_on_update</span>();
+<span class="cm">-- Fires on every UPDATE or DELETE to potentially write a history snapshot</span></code></pre>
+
+      <h3>On visualization_master_history</h3>
+      <pre><code><span class="kw">CREATE TRIGGER</span> history_lock_trigger
+  <span class="kw">BEFORE INSERT OR DELETE OR UPDATE ON</span> public.visualization_master_history
+  <span class="kw">FOR EACH ROW</span>
+  <span class="kw">EXECUTE FUNCTION</span> public.<span class="fn">lock_history_by_visualization_id</span>();
+<span class="cm">-- Protects concurrent history writes via advisory lock</span></code></pre>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>INSERT not tracked</strong>
+          <p>The audit trigger only fires on <code>UPDATE</code> and <code>DELETE</code>. A brand-new record inserted into master is <em>not</em> stored in history until the first update or delete occurs.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Functions -->
+    <div class="section" id="functions">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h2>Trigger Functions</h2>
+      </div>
+
+      <h3>record_audit_on_update()</h3>
+      <p>The main audit function. Fires after any <code>UPDATE</code> or <code>DELETE</code> on <code>visualization_master</code>.</p>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">1</span>
+          <div class="step-content">
+            <h4>Acquire advisory lock</h4>
+            <p>Locks on the <code>visualization_id</code> so concurrent updates serialize correctly.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <div class="step-content">
+            <h4>Check important fields (UPDATE only)</h4>
+            <p>If none of the important fields changed, skip history insertion and return immediately.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <div class="step-content">
+            <h4>Compute next_version</h4>
+            <p>Reads <code>MAX(version_id)</code> from history for this visualization, adds 1. Starts at 1 if no history exists.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">4</span>
+          <div class="step-content">
+            <h4>Insert OLD row into history</h4>
+            <p>Captures the <em>previous state</em> (OLD values), not the new one. Sets <code>history_recorder_at = now()</code>. On DELETE, sets <code>active_flag = false</code>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">5</span>
+          <div class="step-content">
+            <h4>Prune old versions</h4>
+            <p>Deletes any versions older than the last 10 to enforce the retention policy.</p>
+          </div>
+        </div>
+      </div>
+
+      <pre><code><span class="kw">CREATE FUNCTION</span> public.<span class="fn">record_audit_on_update</span>() <span class="kw">RETURNS</span> trigger
+<span class="kw">LANGUAGE</span> plpgsql <span class="kw">AS</span> $$
+<span class="kw">DECLARE</span>
+  next_version          bigint;
+  check_important_fields boolean;
+  vid                   bigint;
+  hist_active_flag      boolean;
+<span class="kw">BEGIN</span>
+  vid := <span class="fn">COALESCE</span>(NEW.visualization_id, OLD.visualization_id);
+  <span class="kw">PERFORM</span> <span class="fn">pg_advisory_xact_lock</span>(vid);
+
+  hist_active_flag := OLD.active_flag;
+
+  <span class="kw">IF</span> TG_OP = <span class="str">'UPDATE'</span> <span class="kw">THEN</span>
+    check_important_fields :=
+      (NEW.visualization_name <span class="kw">IS DISTINCT FROM</span> OLD.visualization_name)
+      <span class="kw">OR</span> (NEW.visualization_config <span class="kw">IS DISTINCT FROM</span> OLD.visualization_config)
+      <span class="kw">OR</span> (NEW.dataset_id_id <span class="kw">IS DISTINCT FROM</span> OLD.dataset_id_id)
+      <span class="kw">OR</span> (NEW.notes_explanations <span class="kw">IS DISTINCT FROM</span> OLD.notes_explanations)
+      <span class="kw">OR</span> (NEW.active_flag <span class="kw">IS DISTINCT FROM</span> OLD.active_flag);
+
+    <span class="kw">IF NOT</span> check_important_fields <span class="kw">THEN</span>
+      <span class="kw">RETURN</span> NEW;  <span class="cm">-- skip, nothing important changed</span>
+    <span class="kw">END IF</span>;
+
+  <span class="kw">ELSIF</span> TG_OP = <span class="str">'DELETE'</span> <span class="kw">THEN</span>
+    hist_active_flag := <span class="kw">false</span>;
+  <span class="kw">END IF</span>;
+
+  <span class="kw">SELECT</span> <span class="fn">COALESCE</span>(
+    (<span class="kw">SELECT</span> version_id <span class="kw">FROM</span> public.visualization_master_history
+     <span class="kw">WHERE</span> visualization_id = vid
+     <span class="kw">ORDER BY</span> version_id <span class="kw">DESC LIMIT</span> <span class="num">1</span>), <span class="num">0</span>
+  ) + <span class="num">1</span> <span class="kw">INTO</span> next_version;
+
+  <span class="kw">INSERT INTO</span> public.visualization_master_history (...)
+  <span class="kw">VALUES</span> (OLD.visualization_id, next_version, OLD.visualization_name, ...);
+
+  <span class="kw">DELETE FROM</span> public.visualization_master_history h
+  <span class="kw">WHERE</span> h.visualization_id = vid
+    <span class="kw">AND</span> h.version_id <= <span class="fn">GREATEST</span>(next_version - <span class="num">10</span>, <span class="num">0</span>);
+
+  <span class="kw">IF</span> TG_OP = <span class="str">'DELETE'</span> <span class="kw">THEN RETURN</span> OLD; <span class="kw">ELSE RETURN</span> NEW; <span class="kw">END IF</span>;
+<span class="kw">END</span>;
+$$;</code></pre>
+
+      <h3>lock_history_by_visualization_id()</h3>
+      <p>A safety function attached to the history table. Acquires the same advisory lock before any manual or programmatic insert/update/delete on history, preventing race conditions if an admin directly touches history rows while the master trigger is running.</p>
+
+      <pre><code><span class="kw">CREATE FUNCTION</span> public.<span class="fn">lock_history_by_visualization_id</span>() <span class="kw">RETURNS</span> trigger
+<span class="kw">LANGUAGE</span> plpgsql <span class="kw">AS</span> $$
+<span class="kw">DECLARE</span>
+  vid bigint;
+<span class="kw">BEGIN</span>
+  vid := <span class="fn">COALESCE</span>(NEW.visualization_id, OLD.visualization_id);
+  <span class="kw">PERFORM</span> <span class="fn">pg_advisory_xact_lock</span>(vid);
+
+  <span class="kw">IF</span> TG_OP = <span class="str">'DELETE'</span> <span class="kw">THEN RETURN</span> OLD; <span class="kw">ELSE RETURN</span> NEW; <span class="kw">END IF</span>;
+<span class="kw">END</span>;
+$$;</code></pre>
+    </div>
+
+    <hr/>
+
+    <!-- Rollback -->
+    <div class="section" id="rollback">
+      <div class="section-header">
+        <span class="section-num">09</span>
+        <h2>Rollback Queries</h2>
+      </div>
+
+      <h3>View available versions</h3>
+      <pre><code><span class="kw">SELECT</span> visualization_id, version_id, history_recorder_at,
+       visualization_name, active_flag
+<span class="kw">FROM</span>   public.visualization_master_history
+<span class="kw">WHERE</span>  visualization_id = <span class="num">2050</span>
+<span class="kw">ORDER BY</span> version_id <span class="kw">DESC</span>;</code></pre>
+
+      <h3>Restore to a specific version</h3>
+      <p>This issues an <code>UPDATE</code> on master, which causes the audit trigger to fire — so the rollback itself is tracked in history.</p>
+      <pre><code><span class="kw">UPDATE</span> public.visualization_master m
+<span class="kw">SET</span>
+  visualization_name           = h.visualization_name,
+  visualization_config         = h.visualization_config,
+  creation_time                = h.creation_time,
+  modified_time                = <span class="fn">now</span>(),
+  created_by_id                = h.created_by_id,
+  dataset_id_id                = h.dataset_id_id,
+  modified_by_id               = <span class="num">1165</span>,   <span class="cm">-- actor performing restore</span>
+  active_flag                  = h.active_flag,
+  visualization_config_preview = h.visualization_config_preview,
+  notes_explanations           = h.notes_explanations
+<span class="kw">FROM</span> public.visualization_master_history h
+<span class="kw">WHERE</span> m.visualization_id = h.visualization_id
+  <span class="kw">AND</span> h.visualization_id = <span class="num">2050</span>
+  <span class="kw">AND</span> h.version_id       = <span class="num">2</span>;</code></pre>
+
+      <h3>Restore using latest snapshot</h3>
+      <pre><code><span class="kw">WITH</span> latest <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> * <span class="kw">FROM</span> public.visualization_master_history
+  <span class="kw">WHERE</span> visualization_id = <span class="num">2050</span>
+  <span class="kw">ORDER BY</span> version_id <span class="kw">DESC LIMIT</span> <span class="num">1</span>
+)
+<span class="kw">UPDATE</span> public.visualization_master m
+<span class="kw">SET</span>
+  visualization_name           = latest.visualization_name,
+  visualization_config         = latest.visualization_config,
+  modified_time                = <span class="fn">now</span>(),
+  modified_by_id               = <span class="num">1165</span>,
+  <span class="cm">-- ... other fields ...</span>
+<span class="kw">FROM</span> latest
+<span class="kw">WHERE</span> m.visualization_id = latest.visualization_id;</code></pre>
+
+      <h3>Re-create a hard-deleted row from history</h3>
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>Use case</strong>
+          <p>If a row was hard-deleted from master but history still exists, you can re-insert it. The <code>ON CONFLICT DO NOTHING</code> guard prevents duplicate insertion.</p>
+        </div>
+      </div>
+      <pre><code><span class="kw">INSERT INTO</span> public.visualization_master (
+  visualization_id, visualization_name, visualization_config,
+  creation_time, modified_time, created_by_id, dataset_id_id,
+  modified_by_id, active_flag, visualization_config_preview, notes_explanations
+)
+<span class="kw">SELECT</span>
+  visualization_id, visualization_name, visualization_config,
+  creation_time, <span class="fn">now</span>() <span class="kw">AS</span> modified_time, created_by_id, dataset_id_id,
+  <span class="num">1165</span> <span class="kw">AS</span> modified_by_id,
+  <span class="kw">true AS</span> active_flag,
+  visualization_config_preview, notes_explanations
+<span class="kw">FROM</span> public.visualization_master_history
+<span class="kw">WHERE</span> visualization_id = <span class="num">2050</span>
+  <span class="kw">AND</span> version_id = <span class="num">2</span>
+<span class="kw">ON CONFLICT</span> (visualization_id) <span class="kw">DO NOTHING</span>;</code></pre>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Active nav highlighting on scroll
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
